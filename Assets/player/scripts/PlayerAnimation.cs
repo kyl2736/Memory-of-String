@@ -5,6 +5,7 @@ public class PlayerAnimation : MonoBehaviour
     private float key_input;
     public bool heading = true;
     public PlayerMovement_Basic playermove;
+    public PlayerMovementSkill skillmove;
     private Animator animator;
     private Transform trans;
     public PlayerAttack PlayerAttack;
@@ -56,6 +57,17 @@ public class PlayerAnimation : MonoBehaviour
         else 
         {
             animator.SetBool("attacking", false);
+            playermove.channeling = false;
+        }
+
+        if (skillmove.spinning)
+        {
+            animator.SetBool("spinning", true);
+            playermove.channeling = true;
+        }
+        else
+        {
+            animator.SetBool("spinning", false);
             playermove.channeling = false;
         }
 

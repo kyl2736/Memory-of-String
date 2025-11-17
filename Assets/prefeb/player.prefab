@@ -46,6 +46,8 @@ GameObject:
   - component: {fileID: 6670445573605197472}
   - component: {fileID: 7046726790318727158}
   - component: {fileID: 8288193095577136883}
+  - component: {fileID: 4581086827394348449}
+  - component: {fileID: 1867805865806847710}
   m_Layer: 0
   m_Name: player
   m_TagString: Untagged
@@ -118,7 +120,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 11.26, y: 15}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -162,8 +164,8 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10.43, y: 13}
-    newSize: {x: 1, y: 1}
+    oldSize: {x: 11.26, y: 15}
+    newSize: {x: 11.26, y: 15}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -234,8 +236,9 @@ MonoBehaviour:
   speed: 12
   acceleration_rate: 6
   stop_rate: 8
+  channeling: 0
   foot: {fileID: 1948934241767865145}
-  jump_power: 8
+  jump_power: 10
   fall_rate: 0.6
   active_doublejump: 1
   groundlayer:
@@ -255,3 +258,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heading: 1
   playermove: {fileID: 7046726790318727158}
+  PlayerAttack: {fileID: 4581086827394348449}
+--- !u!114 &4581086827394348449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5814183071317078810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3468f2e59926737409b3a09fba7e2878, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playermove: {fileID: 7046726790318727158}
+  playerhealth: {fileID: 1867805865806847710}
+  attacking: 0
+--- !u!114 &1867805865806847710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5814183071317078810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4854597979c248e4b8c32987fa6916dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  max_hair: 80
+  hair: 0
+  max_temp_hair: 80
+  temp_hair: 0
+  temp_hair_decrease_rate: 8
+  growth_per_sec: 8
+  temp_growth_per_sec: 16

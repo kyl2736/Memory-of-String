@@ -26,7 +26,7 @@ public class PlayerAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Z)) 
+        if (Input.GetKeyDown(KeyCode.Z) && !playermove.channeling) 
         {
             if (!attacking) { StartCoroutine(Attack()); }
 

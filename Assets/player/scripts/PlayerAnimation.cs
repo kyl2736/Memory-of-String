@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerAnimation : MonoBehaviour
 {
@@ -15,6 +17,30 @@ public class PlayerAnimation : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         trans = GetComponent<Transform>();
+    }
+
+    public IEnumerator Attack()
+    {
+
+        animator.SetBool("attacking", true);
+        playermove.channeling = true;
+        yield return new WaitUntil(() => !PlayerAttack.attacking);
+
+        animator.SetBool("attacking", false);
+        playermove.channeling = false;
+        
+    }
+
+    public IEnumerator Spin()
+    {
+
+        animator.SetBool("spinning", true);
+        playermove.channeling = true;
+        yield return new WaitUntil(() => !skillmove.spinning);
+
+        animator.SetBool("spinning", false);
+        playermove.channeling = false;
+
     }
 
     // Update is called once per frame
@@ -48,28 +74,8 @@ public class PlayerAnimation : MonoBehaviour
         else { animator.SetBool("jumping", false); }
         //RMx
 
-        //АјАн
-        if (PlayerAttack.attacking) 
-        { 
-            animator.SetBool("attacking", true);
-            playermove.channeling = true;
-        }
-        else 
-        {
-            animator.SetBool("attacking", false);
-            playermove.channeling = false;
-        }
 
-        if (skillmove.spinning)
-        {
-            animator.SetBool("spinning", true);
-            playermove.channeling = true;
-        }
-        else
-        {
-            animator.SetBool("spinning", false);
-            playermove.channeling = false;
-        }
+
 
     }
 }

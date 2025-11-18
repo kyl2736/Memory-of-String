@@ -9,6 +9,7 @@ public class PlayerMovement_Basic : MonoBehaviour
     public float acceleration_rate = 6f;
     public float stop_rate = 8f;
     public bool channeling = false;
+    public bool canmove = true;
     public Transform foot;
     public float jump_power = 6.0f;
     public float fall_rate = 0.3f;

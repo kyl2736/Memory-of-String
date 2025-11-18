@@ -22,6 +22,7 @@ public class PlayerMovementSkill : MonoBehaviour
     private Coroutine spin;
     private Coroutine blink;
     public bool spinning = false;
+    public GameObject vanish_effect;
     public GameObject blink_effect;
 
     private void Awake()
@@ -42,26 +43,26 @@ public class PlayerMovementSkill : MonoBehaviour
     IEnumerator Blink()
     {
 
-
+        Instantiate(vanish_effect, trans.position, Quaternion.Euler(90f,0,0));
         if (Input.GetAxisRaw("Horizontal") > 0) 
         {
-            RaycastHit2D laser = Physics2D.BoxCast(trans.position,new Vector2(1.6f,2f),0 , new Vector2(1,0), blink_length+0.8f, ground);
+            RaycastHit2D laser = Physics2D.BoxCast(trans.position,new Vector2(1.8f,2.5f),0 , new Vector2(1,0), blink_length+0.8f, ground);
             trans.position += new Vector3((laser.collider != null) ? laser.distance : blink_length, 0, 0);
 
         }
         else if (Input.GetAxisRaw("Horizontal") < 0) 
         {
-            RaycastHit2D laser = Physics2D.BoxCast(trans.position, new Vector2(1.6f, 2f), 0, new Vector2(-1,0), blink_length + 0.8f, ground);
+            RaycastHit2D laser = Physics2D.BoxCast(trans.position, new Vector2(1.8f, 2.5f), 0, new Vector2(-1,0), blink_length + 0.8f, ground);
             trans.position += new Vector3((laser.collider != null) ? -(laser.distance) : -blink_length, 0, 0);
 
         }
             
         else 
         {
-            RaycastHit2D laser = Physics2D.BoxCast(trans.position, new Vector2(1.6f, 2f), 0, new Vector2(0, 1), blink_length + 0.8f, ground);
+            RaycastHit2D laser = Physics2D.BoxCast(trans.position, new Vector2(1.8f, 2.5f), 0, new Vector2(0, 1), blink_length + 0.8f, ground);
             trans.position += new Vector3(0, (laser.collider != null) ? (laser.distance) : blink_length, 0);
         }
-        Instantiate(blink_effect, trans.position, Quaternion.identity);
+        Instantiate(blink_effect, trans.position, Quaternion.Euler(90f, 0, 0));
         yield return new WaitForSeconds(blink_cooldown);
         blink = null;
     }

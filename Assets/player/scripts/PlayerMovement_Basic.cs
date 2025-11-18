@@ -25,7 +25,7 @@ public class PlayerMovement_Basic : MonoBehaviour
 
     public bool OnGround()
     {
-        return (Physics2D.OverlapBox(foot.position, new Vector2(1.02f, 0.2f), 0f, groundlayer) != null) ? true : false;
+        return (Physics2D.OverlapBox(foot.position, new Vector2(1.8f, 0.2f), 0f, groundlayer) != null) ? true : false;
     }
 
     // Update is called once per frame

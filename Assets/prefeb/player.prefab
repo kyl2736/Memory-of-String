@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 1355536598678878810}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -6.4, z: 0.029579699}
+  m_LocalPosition: {x: 0, y: -7.36, z: 0.029579699}
   m_LocalScale: {x: 6.25, y: 6.25, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 8288193095577136883}
   - component: {fileID: 4581086827394348449}
   - component: {fileID: 1867805865806847710}
+  - component: {fileID: 8383813796746561468}
   m_Layer: 0
   m_Name: player
   m_TagString: Untagged
@@ -65,7 +66,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.16, y: 0.16, z: 1}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1948934241767865145}
@@ -160,7 +161,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.10202694, y: -0.35709763}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -170,7 +171,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 10.43, y: 13}
+  m_Size: {x: 9.3, y: 14}
   m_EdgeRadius: 0
 --- !u!50 &4881852722060190299
 Rigidbody2D:
@@ -187,7 +188,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 3
+  m_GravityScale: 2.5
   m_Material: {fileID: 6200000, guid: f4197c000971c544bbe00b9254f40249, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -238,7 +239,7 @@ MonoBehaviour:
   stop_rate: 8
   channeling: 0
   foot: {fileID: 1948934241767865145}
-  jump_power: 10
+  jump_power: 11
   fall_rate: 0.6
   active_doublejump: 1
   groundlayer:
@@ -258,6 +259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heading: 1
   playermove: {fileID: 7046726790318727158}
+  skillmove: {fileID: 8383813796746561468}
   PlayerAttack: {fileID: 4581086827394348449}
 --- !u!114 &4581086827394348449
 MonoBehaviour:
@@ -293,3 +295,30 @@ MonoBehaviour:
   temp_hair_decrease_rate: 8
   growth_per_sec: 8
   temp_growth_per_sec: 16
+--- !u!114 &8383813796746561468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5814183071317078810}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd45cb6213a34bb4188edc1c705b0276, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Basic: {fileID: 7046726790318727158}
+  ground:
+    serializedVersion: 2
+    m_Bits: 256
+  blink_length: 5
+  blink_cooldown: 0.8
+  spin_pow: 7
+  spin_cooldown: 0.35
+  rope_speed: 0
+  rope_length: 0
+  max_bullet_time: 0
+  rope_move_speed: 0
+  spinning: 0
+  vanish_effect: {fileID: 7108695752974833362, guid: 836dde425e1bc3e42b5f4776d4c957bf, type: 3}
+  blink_effect: {fileID: 7108695752974833362, guid: d5cdc1be20faae040ab97798a020ed14, type: 3}

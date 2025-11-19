@@ -28,6 +28,7 @@ public class PlayerMovementSkill : MonoBehaviour
     public GameObject arrow;
     public Coroutine rope;
     private bool ankorcontact;
+    private bool xpressed = false;
 
     private void Awake()
     {
@@ -90,17 +91,20 @@ public class PlayerMovementSkill : MonoBehaviour
         if (Input.GetKey(KeyCode.RightArrow)) 
         { 
             ankor = Instantiate(arrow, trans.position, Quaternion.Euler(0, 0, 0));
+            ankor.GetComponent<ArrowScript>().player = this.gameObject;
             Time.timeScale = 1f;
         }
 
         else if (Input.GetKey(KeyCode.UpArrow)) 
         {
             ankor = Instantiate(arrow, trans.position, Quaternion.Euler(0, 0, 90));
+            ankor.GetComponent<ArrowScript>().player = this.gameObject;
             Time.timeScale = 1f;
         }
         else if (Input.GetKey(KeyCode.LeftArrow)) 
         {
             ankor = Instantiate(arrow, trans.position, Quaternion.Euler(0, 180, 0));
+            ankor.GetComponent<ArrowScript>().player = this.gameObject;
             Time.timeScale = 1f;
         }
         else 
@@ -110,20 +114,35 @@ public class PlayerMovementSkill : MonoBehaviour
             yield break;
         }
 
-        yield return new WaitUntil(() => ankorcontact || Input.GetKeyDown(KeyCode.X));
-        if (Input.GetKey(KeyCode.X))
+        yield return new WaitUntil(() => ankorcontact || xpressed);
+        if (!ankorcontact && Input.GetKey(KeyCode.X))
         {
             Destroy(ankor);
+            xpressed = false;
             rope = null;
             yield break;
+
         }
         else
-        { 
-            
+        {
+            body.gravityScale = 0;
+            while (!xpressed)
+            {
+                if (((Vector2)ankor.transform.position - (Vector2)body.transform.position).magnitude > 0.6f)
+                {
+                    body.linearVelocity = ((Vector2)ankor.transform.position - (Vector2)body.transform.position).normalized * rope_move_speed;
+                }
+                else { body.linearVelocity = Vector2.zero; }
+
+                yield return new WaitForFixedUpdate();
+            }
         }
+        xpressed = false;
+        body.gravityScale = 2.5f;
 
+        Destroy(ankor);
 
-
+        yield return new WaitForSeconds(0.2f);
             rope = null;
     }
 
@@ -136,6 +155,8 @@ public class PlayerMovementSkill : MonoBehaviour
     void Update()
     {
 
+        if (Input.GetKeyDown(KeyCode.X)) { xpressed = true; }
+
         if (Input.GetKeyDown(KeyCode.C) && spin == null && !Basic.channeling)
         {
             spin = StartCoroutine(Spin());
@@ -147,6 +168,11 @@ public class PlayerMovementSkill : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.X) && rope == null) { rope = StartCoroutine(Rope()); }
+        if (xpressed && rope == null)   
+        {
+            xpressed = false;   
+            rope = StartCoroutine(Rope()); 
+        }
+
     }
 }

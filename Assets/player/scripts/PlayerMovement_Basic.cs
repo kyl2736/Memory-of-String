@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -52,13 +53,18 @@ public class PlayerMovement_Basic : MonoBehaviour
 
     private void Update()
     {
+        if (!candoublejump)
+        {
+            if (OnGround()) { candoublejump = true; }
+        }
+        
         //점프
         if (Input.GetKeyDown(KeyCode.Space) && !channeling)
         {
             if (OnGround())
             {
                 body.linearVelocityY = jump_power;
-                candoublejump = true;
+                
             }
             else if (active_doublejump && candoublejump)
             {
@@ -66,12 +72,12 @@ public class PlayerMovement_Basic : MonoBehaviour
                 candoublejump = false;
             }
         }
-
+        /*
         if (Input.GetKeyUp(KeyCode.Space) && body.linearVelocityY > 0)
         {
 
             body.linearVelocityY *= fall_rate;
         }
-        //여기까지
+        //여기까지 */
     }
 }

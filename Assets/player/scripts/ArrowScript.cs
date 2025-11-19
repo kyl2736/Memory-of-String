@@ -5,6 +5,8 @@ public class ArrowScript : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private Rigidbody2D body;
+    public GameObject player;
+    private PlayerMovementSkill skillmove;
 
     private void Awake()
     {
@@ -13,7 +15,8 @@ public class ArrowScript : MonoBehaviour
 
     void Start()
     {
-        body.linearVelocity = transform.right * 20;
+        body.linearVelocity = transform.right * 60;
+        skillmove = player.GetComponent<PlayerMovementSkill>();
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -22,7 +25,7 @@ public class ArrowScript : MonoBehaviour
         if (collision.gameObject.layer == 8)
         {    
             body.linearVelocity = Vector2.zero;
-
+            skillmove.Ankor_move();
         }
     }
 

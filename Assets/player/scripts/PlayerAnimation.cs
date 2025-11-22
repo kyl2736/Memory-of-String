@@ -11,12 +11,16 @@ public class PlayerAnimation : MonoBehaviour
     private Animator animator;
     private Transform trans;
     public PlayerAttack PlayerAttack;
-
+   
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         animator = GetComponent<Animator>();
         trans = GetComponent<Transform>();
+    }
+    private void Start()
+    {
+
     }
 
     public IEnumerator Attack()
@@ -70,7 +74,11 @@ public class PlayerAnimation : MonoBehaviour
         //끝
 
         //점프 애니메이션
-        if (!playermove.OnGround()) { animator.SetBool("jumping", true); }
+        
+        if (!playermove.OnGround()) 
+        { 
+            animator.SetBool("jumping", true); 
+        }
         else { animator.SetBool("jumping", false); }
         //RMx
 

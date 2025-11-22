@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -11,13 +12,15 @@ public class PlayerMovement_Basic : MonoBehaviour
     public float stop_rate = 8f;
     public bool channeling = false;
     public bool canmove = true;
-    public Transform foot;
+    public BoxCollider2D foot;
     public float jump_power = 6.0f;
     public float fall_rate = 0.3f;
     public bool active_doublejump = false;
     private bool candoublejump = true;
     public LayerMask groundlayer;
 
+    private List<RaycastHit2D> trash = new List<RaycastHit2D>();
+    private ContactFilter2D filter;
 
     private void Awake()
     {
@@ -25,9 +28,27 @@ public class PlayerMovement_Basic : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        filter = new ContactFilter2D();
+
+        
+        filter.SetLayerMask(groundlayer); 
+        filter.useLayerMask = true;
+    }
+
     public bool OnGround()
     {
-        return (Physics2D.OverlapBox(foot.position, new Vector2(1.8f, 0.2f), 0f, groundlayer) != null) ? true : false;
+        int hitCount = foot.Cast(Vector2.down, filter, trash, 0.02f);
+
+        if (foot.Cast(Vector2.down, filter, trash, 0.02f) > 0)
+        {
+            foreach (RaycastHit2D hit in trash)
+            {
+                if (hit.normal.y > 0.8f) { return true; }
+            }
+        }
+        return false;
     }
 
     // Update is called once per frame
@@ -53,16 +74,24 @@ public class PlayerMovement_Basic : MonoBehaviour
 
     private void Update()
     {
+        
         if (!candoublejump)
         {
-            if (OnGround()) { candoublejump = true; }
+            if (OnGround()) 
+            { 
+                candoublejump = true;
+                print("charged");
+            }
         }
         
         //มกวม
         if (Input.GetKeyDown(KeyCode.Space) && !channeling)
         {
+            
+            //print(OnGround());
             if (OnGround())
             {
+                
                 body.linearVelocityY = jump_power;
                 
             }

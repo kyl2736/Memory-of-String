@@ -10,15 +10,9 @@ public class PlayerMovementSkill : MonoBehaviour
     private Rigidbody2D body;
     private Transform trans;
     public LayerMask ground;
+    private Collider2D coli;
 
-    public float blink_length;
-    public float blink_cooldown;
-    public float spin_pow;
-    public float spin_cooldown;
-    public float rope_speed;
-    public float rope_length;
-    public float max_bullet_time;
-    public float rope_move_speed;
+    public PlayerConfig config;
 
     private Coroutine spin;
     private Coroutine blink;
@@ -34,45 +28,47 @@ public class PlayerMovementSkill : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         trans = GetComponent<Transform>();
+        coli = GetComponent<Collider2D>();
     }
     IEnumerator Spin()
     {   
         spinning = true;
         StartCoroutine(anim.Spin());
-        if (!Basic.OnGround()) { body.linearVelocityY = spin_pow; }
+        if (!Basic.OnGround()) { body.linearVelocityY = config.spin_pow; }
         yield return new WaitForSeconds(0.3f);
         spinning = false;
-        yield return new WaitForSeconds(spin_cooldown);
+        yield return new WaitForSeconds(config.spin_cooldown);
         spin = null;
     }
 
     IEnumerator Blink()
     {
 
-        Instantiate(vanish_effect, trans.position, Quaternion.Euler(90f,0,0));
-        if (Input.GetAxisRaw("Horizontal") > 0) 
+        if (anim.heading) 
         {
-            RaycastHit2D laser = Physics2D.BoxCast(trans.position,new Vector2(1.8f,2.5f),0 , new Vector2(1,0), blink_length+0.8f, ground);
-            trans.position += new Vector3((laser.collider != null) ? laser.distance : blink_length, 0, 0);
+            Instantiate(vanish_effect, trans.position, Quaternion.Euler(90f, 0, 0));
+
+            RaycastHit2D laser = Physics2D.BoxCast(trans.position,new Vector2(1.5f,2.8f),0 , new Vector2(1,0), config.dash_length+0.8f, ground);
+            trans.position += new Vector3((laser.collider != null) ? laser.distance : config.dash_length, 0, 0);
             body.linearVelocityY /= 4;
 
+            Instantiate(blink_effect, trans.position, Quaternion.Euler(90f, 0, 0));
+            yield return new WaitForSeconds(config.dash_cooldown);
+
         }
-        else if (Input.GetAxisRaw("Horizontal") < 0) 
+        else  
         {
-            RaycastHit2D laser = Physics2D.BoxCast(trans.position, new Vector2(1.8f, 2.5f), 0, new Vector2(-1,0), blink_length + 0.8f, ground);
-            trans.position += new Vector3((laser.collider != null) ? -(laser.distance) : -blink_length, 0, 0);
+            Instantiate(vanish_effect, trans.position, Quaternion.Euler(90f, 0, 0));
+
+            RaycastHit2D laser = Physics2D.BoxCast(trans.position, new Vector2(1.5f, 2.8f), 0, new Vector2(-1,0), config.dash_length + 0.8f, ground);
+            trans.position += new Vector3((laser.collider != null) ? -(laser.distance) : -config.dash_length, 0, 0);
             body.linearVelocityY /= 4;
+
+            Instantiate(blink_effect, trans.position, Quaternion.Euler(90f, 0, 0));
+            yield return new WaitForSeconds(config.dash_cooldown);
 
         }
             
-        else 
-        {
-            RaycastHit2D laser = Physics2D.BoxCast(trans.position, new Vector2(1.8f, 2.5f), 0, new Vector2(0, 1), blink_length + 0.8f, ground);
-            trans.position += new Vector3(0, (laser.collider != null) ? (laser.distance) : blink_length, 0);
-            body.linearVelocityY /= 4;
-        }
-        Instantiate(blink_effect, trans.position, Quaternion.Euler(90f, 0, 0));
-        yield return new WaitForSeconds(blink_cooldown);
         blink = null;
     }
 
@@ -126,11 +122,11 @@ public class PlayerMovementSkill : MonoBehaviour
         else
         {
             body.gravityScale = 0;
-            while (!xpressed)
+            while (!xpressed /*&& !coli.IsTouchingLayers(ground)*/)
             {
-                if (((Vector2)ankor.transform.position - (Vector2)body.transform.position).magnitude > 0.6f)
+                if (((Vector2)ankor.transform.position - (Vector2)body.transform.position).magnitude > 0.32f)
                 {
-                    body.linearVelocity = ((Vector2)ankor.transform.position - (Vector2)body.transform.position).normalized * rope_move_speed;
+                    body.linearVelocity = ((Vector2)ankor.transform.position - (Vector2)body.transform.position).normalized * config.rope_move_speed;
                 }
                 else { body.linearVelocity = Vector2.zero; }
 

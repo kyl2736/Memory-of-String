@@ -5,16 +5,15 @@ using UnityEngine.Rendering;
 
 public class PlayerMovement_Basic : MonoBehaviour
 {
+    public PlayerConfig config;
     private Rigidbody2D body;
     private float key_input;
-    public float speed = 16f;
-    public float acceleration_rate = 6f;
-    public float stop_rate = 8f;
+    public BoxCollider2D foot;
+
     public bool channeling = false;
     public bool canmove = true;
-    public BoxCollider2D foot;
-    public float jump_power = 6.0f;
-    public float fall_rate = 0.3f;
+
+
     public bool active_doublejump = false;
     private bool candoublejump = true;
     public LayerMask groundlayer;
@@ -25,11 +24,14 @@ public class PlayerMovement_Basic : MonoBehaviour
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
+        
 
     }
 
     private void Start()
     {
+
+        body.gravityScale = config.gravity;
         filter = new ContactFilter2D();
 
         
@@ -56,17 +58,17 @@ public class PlayerMovement_Basic : MonoBehaviour
     {
         //좌우 이동
         key_input = Input.GetAxisRaw("Horizontal");
-        float targetspeed = key_input * speed;
+        float targetspeed = key_input * config.movespeed;
 
         if (targetspeed - body.linearVelocityX > 0 )
         {
-            if (body.linearVelocityX >= 0) { body.AddForce(Vector2.right * (targetspeed - body.linearVelocityX) * acceleration_rate, ForceMode2D.Force); }
-            else { body.AddForce(Vector2.right * (targetspeed - body.linearVelocityX) * stop_rate, ForceMode2D.Force); }
+            if (body.linearVelocityX >= 0) { body.AddForce(Vector2.right * (targetspeed - body.linearVelocityX) * config.accel_rate, ForceMode2D.Force); }
+            else { body.AddForce(Vector2.right * (targetspeed - body.linearVelocityX) * config.stop_rate, ForceMode2D.Force); }
         }
         else if (targetspeed - body.linearVelocityX < 0 )
         {
-            if (body.linearVelocityX <= 0) { body.AddForce(Vector2.right * (targetspeed - body.linearVelocityX) * acceleration_rate, ForceMode2D.Force); }
-            else { body.AddForce(Vector2.right * (targetspeed - body.linearVelocityX) * stop_rate, ForceMode2D.Force); }
+            if (body.linearVelocityX <= 0) { body.AddForce(Vector2.right * (targetspeed - body.linearVelocityX) * config.accel_rate, ForceMode2D.Force); }
+            else { body.AddForce(Vector2.right * (targetspeed - body.linearVelocityX) * config.stop_rate, ForceMode2D.Force); }
         }
         //여기까지
 
@@ -92,12 +94,12 @@ public class PlayerMovement_Basic : MonoBehaviour
             if (OnGround())
             {
                 
-                body.linearVelocityY = jump_power;
+                body.linearVelocityY = config.jump_pow;
                 
             }
             else if (active_doublejump && candoublejump)
             {
-                body.linearVelocityY = jump_power;
+                body.linearVelocityY = config.jump_pow;
                 candoublejump = false;
             }
         }

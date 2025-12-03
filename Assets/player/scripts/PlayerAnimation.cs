@@ -51,10 +51,12 @@ public class PlayerAnimation : MonoBehaviour
     void Update()
     {
         key_input = Input.GetAxisRaw("Horizontal");
+
         //좌우 애니메이션
         if (key_input > 0)
         {
-            if (!heading && playermove.OnGround() && !playermove.channeling)
+            print("되는데?");  
+            if (!heading)
             {
                 trans.localScale = new Vector3(-trans.localScale.x, trans.localScale.y, trans.localScale.z);
                 heading = true;
@@ -63,7 +65,7 @@ public class PlayerAnimation : MonoBehaviour
         }
         else if (key_input < 0)
         {
-            if (heading && playermove.OnGround() && !playermove.channeling)
+            if (heading)
             {
                 trans.localScale = new Vector3(-trans.localScale.x, trans.localScale.y, trans.localScale.z);
                 heading = false;
@@ -83,7 +85,7 @@ public class PlayerAnimation : MonoBehaviour
         //RMx
 
 
-
+        
 
     }
 }

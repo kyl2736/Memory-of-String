@@ -66,7 +66,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.05, y: 0.06}
+  m_Offset: {x: 0, y: 0.06}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -76,7 +76,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 7, y: 0.04}
+  m_Size: {x: 7.4, y: 0.04}
   m_EdgeRadius: 0
 --- !u!1 &5814183071317078810
 GameObject:
@@ -245,7 +245,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!95 &6670445573605197472
 Animator:
@@ -311,6 +311,7 @@ MonoBehaviour:
   vanish_effect: {fileID: 7108695752974833362, guid: 836dde425e1bc3e42b5f4776d4c957bf, type: 3}
   blink_effect: {fileID: 7108695752974833362, guid: d5cdc1be20faae040ab97798a020ed14, type: 3}
   arrow: {fileID: 5967754057566301475, guid: 62164b7e075d49940a05bdc327d1f6a2, type: 3}
+  zansang_pre: {fileID: 9049884453242329395, guid: 9ff9b4dfb71ca8043b4e882599aadc94, type: 3}
 --- !u!114 &8288193095577136883
 MonoBehaviour:
   m_ObjectHideFlags: 0

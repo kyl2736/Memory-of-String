@@ -55,17 +55,17 @@ public class PlayerAnimation : MonoBehaviour
         //좌우 애니메이션
         if (key_input > 0)
         {
-            print("되는데?");  
-            if (!heading)
+            
+            if (!heading && playermove.canmove)
             {
                 trans.localScale = new Vector3(-trans.localScale.x, trans.localScale.y, trans.localScale.z);
                 heading = true;
             }
             animator.SetBool("running", true);
         }
-        else if (key_input < 0)
+        else if (key_input < 0 )
         {
-            if (heading)
+            if (heading && playermove.canmove)
             {
                 trans.localScale = new Vector3(-trans.localScale.x, trans.localScale.y, trans.localScale.z);
                 heading = false;

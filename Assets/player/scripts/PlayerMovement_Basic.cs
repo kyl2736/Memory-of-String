@@ -17,6 +17,7 @@ public class PlayerMovement_Basic : MonoBehaviour
     public bool active_doublejump = false;
     private bool candoublejump = true;
     public LayerMask groundlayer;
+    private float last_onground_time;
 
     private List<RaycastHit2D> trash = new List<RaycastHit2D>();
     private ContactFilter2D filter;
@@ -60,12 +61,12 @@ public class PlayerMovement_Basic : MonoBehaviour
         key_input = Input.GetAxisRaw("Horizontal");
         float targetspeed = key_input * config.movespeed;
 
-        if (targetspeed - body.linearVelocityX > 0 )
+        if (targetspeed - body.linearVelocityX > 0 && canmove)
         {
             if (body.linearVelocityX >= 0) { body.AddForce(Vector2.right * (targetspeed - body.linearVelocityX) * config.accel_rate, ForceMode2D.Force); }
             else { body.AddForce(Vector2.right * (targetspeed - body.linearVelocityX) * config.stop_rate, ForceMode2D.Force); }
         }
-        else if (targetspeed - body.linearVelocityX < 0 )
+        else if (targetspeed - body.linearVelocityX < 0 && canmove )
         {
             if (body.linearVelocityX <= 0) { body.AddForce(Vector2.right * (targetspeed - body.linearVelocityX) * config.accel_rate, ForceMode2D.Force); }
             else { body.AddForce(Vector2.right * (targetspeed - body.linearVelocityX) * config.stop_rate, ForceMode2D.Force); }
@@ -76,13 +77,13 @@ public class PlayerMovement_Basic : MonoBehaviour
 
     private void Update()
     {
+        if (OnGround()) { last_onground_time = Time.time ;}
         
         if (!candoublejump)
         {
             if (OnGround()) 
             { 
                 candoublejump = true;
-                print("charged");
             }
         }
         
@@ -91,15 +92,18 @@ public class PlayerMovement_Basic : MonoBehaviour
         {
             
             //print(OnGround());
-            if (OnGround())
+            if (Time.time - last_onground_time < 0.08f && canmove)
             {
                 
                 body.linearVelocityY = config.jump_pow;
+                
+                
                 
             }
-            else if (active_doublejump && candoublejump)
+            else if (active_doublejump && candoublejump && canmove)
             {
                 body.linearVelocityY = config.jump_pow;
+                
                 candoublejump = false;
             }
         }
@@ -110,5 +114,7 @@ public class PlayerMovement_Basic : MonoBehaviour
             body.linearVelocityY *= fall_rate;
         }
         //여기까지 */
+        
+        
     }
 }

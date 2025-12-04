@@ -9,6 +9,7 @@ public class PlayerMovementSkill : MonoBehaviour
     public PlayerAnimation anim;
     private Rigidbody2D body;
     private Transform trans;
+    private SpriteRenderer sprite;
     public LayerMask ground;
     private Collider2D coli;
 
@@ -20,6 +21,7 @@ public class PlayerMovementSkill : MonoBehaviour
     public GameObject vanish_effect;
     public GameObject blink_effect;
     public GameObject arrow;
+    public GameObject zansang_pre;
     public Coroutine rope;
     private bool ankorcontact;
     private bool xpressed = false;
@@ -29,6 +31,7 @@ public class PlayerMovementSkill : MonoBehaviour
         body = GetComponent<Rigidbody2D>();
         trans = GetComponent<Transform>();
         coli = GetComponent<Collider2D>();
+        sprite = GetComponent<SpriteRenderer>();
     }
     IEnumerator Spin()
     {   
@@ -41,30 +44,57 @@ public class PlayerMovementSkill : MonoBehaviour
         spin = null;
     }
 
-    IEnumerator Blink()
+    IEnumerator Dash()
     {
 
         if (anim.heading) 
         {
-            Instantiate(vanish_effect, trans.position, Quaternion.Euler(90f, 0, 0));
-
+            /*
             RaycastHit2D laser = Physics2D.BoxCast(trans.position,new Vector2(1.5f,2.8f),0 , new Vector2(1,0), config.dash_length+0.8f, ground);
             trans.position += new Vector3((laser.collider != null) ? laser.distance : config.dash_length, 0, 0);
-            body.linearVelocityY /= 4;
+            body.linearVelocityY /= 4; */
 
-            Instantiate(blink_effect, trans.position, Quaternion.Euler(90f, 0, 0));
+            body.linearVelocityX = config.dash_speed;
+            body.linearVelocityY = 0;
+            body.gravityScale = 0;
+            Basic.canmove = false;
+
+            GameObject zansang1 = Instantiate(zansang_pre, trans.position, trans.rotation);
+            zansang1.GetComponent<ZansangScript>().SetSprite(sprite.sprite, trans.localScale);
+            for (int i = 0; i<3; i++)
+            {
+                yield return new WaitForFixedUpdate();
+                GameObject zansang = Instantiate(zansang_pre, trans.position, trans.rotation);
+                zansang.GetComponent<ZansangScript>().SetSprite(sprite.sprite, trans.localScale);
+            }
+
+            Basic.canmove = true;
+            body.gravityScale = config.gravity;
+            body.linearVelocityX = config.movespeed;
+
             yield return new WaitForSeconds(config.dash_cooldown);
 
         }
         else  
         {
-            Instantiate(vanish_effect, trans.position, Quaternion.Euler(90f, 0, 0));
+            body.linearVelocityX = -config.dash_speed;
+            body.linearVelocityY = 0;
+            body.gravityScale = 0;
+            Basic.canmove = false;
 
-            RaycastHit2D laser = Physics2D.BoxCast(trans.position, new Vector2(1.5f, 2.8f), 0, new Vector2(-1,0), config.dash_length + 0.8f, ground);
-            trans.position += new Vector3((laser.collider != null) ? -(laser.distance) : -config.dash_length, 0, 0);
-            body.linearVelocityY /= 4;
+            GameObject zansang1 = Instantiate(zansang_pre, trans.position, trans.rotation);
+            zansang1.GetComponent<ZansangScript>().SetSprite(sprite.sprite, trans.localScale);
+            for (int i = 0; i < 3; i++)
+            {
+                yield return new WaitForFixedUpdate();
+                GameObject zansang = Instantiate(zansang_pre, trans.position, trans.rotation);
+                zansang.GetComponent<ZansangScript>().SetSprite(sprite.sprite, trans.localScale);
+            }
 
-            Instantiate(blink_effect, trans.position, Quaternion.Euler(90f, 0, 0));
+            Basic.canmove = true;
+            body.gravityScale = config.gravity;
+            body.linearVelocityX = -config.movespeed;
+
             yield return new WaitForSeconds(config.dash_cooldown);
 
         }
@@ -160,7 +190,7 @@ public class PlayerMovementSkill : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && blink == null)
         {
-            blink = StartCoroutine(Blink());
+            blink = StartCoroutine(Dash());
         }
 
 

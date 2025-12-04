@@ -7,6 +7,7 @@ public class ArrowScript : MonoBehaviour
     private Rigidbody2D body;
     public GameObject player;
     private PlayerMovementSkill skillmove;
+    public PlayerConfig config;
 
     private void Awake()
     {
@@ -15,7 +16,7 @@ public class ArrowScript : MonoBehaviour
 
     void Start()
     {
-        body.linearVelocity = transform.right * 60;
+        body.linearVelocity = transform.right * config.ankor_speed;
         skillmove = player.GetComponent<PlayerMovementSkill>();
     }
 
@@ -23,7 +24,8 @@ public class ArrowScript : MonoBehaviour
     {
 
         if (collision.gameObject.layer == 8)
-        {    
+        {   
+            
             body.linearVelocity = Vector2.zero;
             skillmove.Ankor_move();
         }

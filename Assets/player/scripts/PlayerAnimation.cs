@@ -11,12 +11,16 @@ public class PlayerAnimation : MonoBehaviour
     private Animator animator;
     private Transform trans;
     public PlayerAttack PlayerAttack;
-
+   
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         animator = GetComponent<Animator>();
         trans = GetComponent<Transform>();
+    }
+    private void Start()
+    {
+
     }
 
     public IEnumerator Attack()
@@ -47,19 +51,21 @@ public class PlayerAnimation : MonoBehaviour
     void Update()
     {
         key_input = Input.GetAxisRaw("Horizontal");
+
         //좌우 애니메이션
         if (key_input > 0)
         {
-            if (!heading && playermove.OnGround() && !playermove.channeling)
+            
+            if (!heading && playermove.canmove)
             {
                 trans.localScale = new Vector3(-trans.localScale.x, trans.localScale.y, trans.localScale.z);
                 heading = true;
             }
             animator.SetBool("running", true);
         }
-        else if (key_input < 0)
+        else if (key_input < 0 )
         {
-            if (heading && playermove.OnGround() && !playermove.channeling)
+            if (heading && playermove.canmove)
             {
                 trans.localScale = new Vector3(-trans.localScale.x, trans.localScale.y, trans.localScale.z);
                 heading = false;
@@ -70,12 +76,16 @@ public class PlayerAnimation : MonoBehaviour
         //끝
 
         //점프 애니메이션
-        if (!playermove.OnGround()) { animator.SetBool("jumping", true); }
+        
+        if (!playermove.OnGround()) 
+        { 
+            animator.SetBool("jumping", true); 
+        }
         else { animator.SetBool("jumping", false); }
         //RMx
 
 
-
+        
 
     }
 }

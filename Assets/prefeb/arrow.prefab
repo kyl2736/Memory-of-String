@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 13.009, y: -42.993, z: 0}
-  m_LocalScale: {x: 0.4, y: 0.4, z: 1}
+  m_LocalScale: {x: 0.32, y: 0.32, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -76,8 +76,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 933408429
+  m_SortingLayer: -1
   m_SortingOrder: 0
   m_Sprite: {fileID: -765150924802650856, guid: 2ce5cacaec2e4e64c8b36ee869dfcee5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -129,9 +129,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad26fe981310c514292e630c5054fc07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundlayer:
-    serializedVersion: 2
-    m_Bits: 256
+  player: {fileID: 0}
+  config: {fileID: 11400000, guid: debed79a87f00b840b86c50a1d8f497e, type: 2}
 --- !u!61 &3072094505196252807
 BoxCollider2D:
   m_ObjectHideFlags: 0

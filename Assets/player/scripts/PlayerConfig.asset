@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b66db3ff3e51ec49adcd7fed83b0f66, type: 3}
+  m_Name: PlayerConfig
+  m_EditorClassIdentifier: 
+  movespeed: 12
+  accel_rate: 6
+  stop_rate: 8
+  jump_pow: 11
+  dash_length: 5
+  dash_cooldown: 0.8
+  spin_pow: 7
+  spin_cooldown: 0.6
+  ankor_speed: 60
+  rope_length: 0
+  max_bullet_time: 0
+  rope_move_speed: 32
+  max_hair: 8
+  barrier_guage: 0

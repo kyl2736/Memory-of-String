@@ -23,8 +23,11 @@ public class PlayerMovementSkill : MonoBehaviour
     public GameObject arrow;
     public GameObject zansang_pre;
     public Coroutine rope;
+
     private bool ankorcontact;
+
     private bool xpressed = false;
+    private bool cpressed = false;
 
     private void Awake()
     {
@@ -109,7 +112,6 @@ public class PlayerMovementSkill : MonoBehaviour
 
     IEnumerator Rope()
     {
-        ankorcontact = false;
         GameObject ankor;
         Time.timeScale = 0.3f;
         yield return new WaitUntil(() => Input.GetKeyUp(KeyCode.X) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow));
@@ -152,6 +154,8 @@ public class PlayerMovementSkill : MonoBehaviour
         else
         {
             body.gravityScale = 0;
+            cpressed = false;
+            
             while (!xpressed /*&& !coli.IsTouchingLayers(ground)*/)
             {
                 if (((Vector2)ankor.transform.position - (Vector2)body.transform.position).magnitude > 0.32f)
@@ -160,16 +164,26 @@ public class PlayerMovementSkill : MonoBehaviour
                 }
                 else { body.linearVelocity = Vector2.zero; }
 
+                if (cpressed)
+                {
+                    cpressed = false;
+                    if (spin == null) 
+                    {
+                        spin = StartCoroutine(Spin());
+                        break;
+                    }
+                }
+
                 yield return new WaitForFixedUpdate();
             }
         }
         xpressed = false;
-        body.gravityScale = 2.5f;
-
+        body.gravityScale = config.gravity;
+        ankorcontact = false;
         Destroy(ankor);
 
         yield return new WaitForSeconds(0.2f);
-            rope = null;
+        rope = null;
     }
 
     void Start()
@@ -183,8 +197,11 @@ public class PlayerMovementSkill : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.X)) { xpressed = true; }
 
-        if (Input.GetKeyDown(KeyCode.C) && spin == null && !Basic.channeling)
+        if (Input.GetKeyDown(KeyCode.C)) { cpressed = true; }
+
+        if (Input.GetKeyDown(KeyCode.C) && spin == null && !Basic.channeling && !ankorcontact) 
         {
+
             spin = StartCoroutine(Spin());
         }
 

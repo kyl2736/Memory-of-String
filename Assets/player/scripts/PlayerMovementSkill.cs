@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.XR;
 
 public class PlayerMovementSkill : MonoBehaviour
 {
@@ -23,11 +24,16 @@ public class PlayerMovementSkill : MonoBehaviour
     public GameObject blink_effect;
     public GameObject arrow;
     public GameObject zansang_pre;
+    public GameObject bomb_pre;
+    private GameObject bomb;
     public Coroutine rope;
-    public GameObject ankor;
+    private GameObject ankor;
     private LineRenderer rope_renderer;
 
     private bool ankorcontact;
+    public bool flying_f = false;
+    public bool flying_b = false;
+    private Coroutine boom;
 
     private bool xpressed = false;
     private bool cpressed = false;
@@ -197,6 +203,33 @@ public class PlayerMovementSkill : MonoBehaviour
         rope = null;
     }
 
+    IEnumerator Bomb()
+    {
+        if (anim.heading)
+        {
+            bomb = Instantiate(bomb_pre, trans.position + new Vector3(1.2f, -1.4f, 0), Quaternion.Euler(0, 0, 0));
+            flying_b = true;
+            flying_f = false;
+            body.linearVelocityX = -config.bomb_speed_x;
+            body.linearVelocityY = config.bomb_speed_y;
+        }
+        else
+        {
+            bomb = Instantiate(bomb_pre, trans.position + new Vector3(-1.2f, -1.4f, 0), Quaternion.Euler(0, 180, 0));
+            flying_f = true;
+            flying_b= false;
+            body.linearVelocityX = config.bomb_speed_x;
+            body.linearVelocityY = config.bomb_speed_y;
+        }
+        yield return new WaitForSeconds(0.2f);
+        Destroy(bomb);  
+        yield return new WaitForSeconds(config.bomb_cooddown-0.2f);
+        flying_f = false;
+        flying_b = false;
+        boom = null;
+        
+    }
+
     void Start()
     {
         
@@ -221,8 +254,15 @@ public class PlayerMovementSkill : MonoBehaviour
             blink = StartCoroutine(Dash());
         }
 
+        if (Input.GetKeyDown(KeyCode.V) && boom == null)
+        {
+            boom = StartCoroutine(Bomb());
+        }
+        if (body.linearVelocityX < config.movespeed && flying_f) { flying_f = false; }
+        if (body.linearVelocityX > -config.movespeed && flying_b) { flying_b = false;  }
 
-        if (xpressed && rope == null)   
+
+            if (xpressed && rope == null)   
         {
             xpressed = false;   
             rope = StartCoroutine(Rope()); 

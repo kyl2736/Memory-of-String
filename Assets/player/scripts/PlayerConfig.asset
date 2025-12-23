@@ -19,7 +19,7 @@ MonoBehaviour:
   gravity: 2.5
   dash_length: 5
   dash_speed: 60
-  dash_cooldown: 0.8
+  dash_cooldown: 0.6
   spin_pow: 8
   spin_cooldown: 0.6
   ankor_speed: 60

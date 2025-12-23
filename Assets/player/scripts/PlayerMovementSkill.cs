@@ -18,11 +18,14 @@ public class PlayerMovementSkill : MonoBehaviour
     private Coroutine spin;
     private Coroutine blink;
     public bool spinning = false;
+
     public GameObject vanish_effect;
     public GameObject blink_effect;
     public GameObject arrow;
     public GameObject zansang_pre;
     public Coroutine rope;
+    public GameObject ankor;
+    private LineRenderer rope_renderer;
 
     private bool ankorcontact;
 
@@ -35,6 +38,9 @@ public class PlayerMovementSkill : MonoBehaviour
         trans = GetComponent<Transform>();
         coli = GetComponent<Collider2D>();
         sprite = GetComponent<SpriteRenderer>();
+        rope_renderer = GetComponent<LineRenderer>();
+        rope_renderer.positionCount = 2;
+
     }
     IEnumerator Spin()
     {   
@@ -59,14 +65,14 @@ public class PlayerMovementSkill : MonoBehaviour
 
             body.linearVelocityX = config.dash_speed;
             body.linearVelocityY = 0;
-            body.gravityScale = 0;
+            body.gravityScale = 0;  
             Basic.canmove = false;
 
             GameObject zansang1 = Instantiate(zansang_pre, trans.position, trans.rotation);
             zansang1.GetComponent<ZansangScript>().SetSprite(sprite.sprite, trans.localScale);
             for (int i = 0; i<3; i++)
             {
-                yield return new WaitForFixedUpdate();
+                for (int j = 0; j < (int)(1 / Time.timeScale); j++) { yield return new WaitForFixedUpdate(); }
                 GameObject zansang = Instantiate(zansang_pre, trans.position, trans.rotation);
                 zansang.GetComponent<ZansangScript>().SetSprite(sprite.sprite, trans.localScale);
             }
@@ -89,7 +95,7 @@ public class PlayerMovementSkill : MonoBehaviour
             zansang1.GetComponent<ZansangScript>().SetSprite(sprite.sprite, trans.localScale);
             for (int i = 0; i < 3; i++)
             {
-                yield return new WaitForFixedUpdate();
+                for (int j = 0; j < (int)(1 / Time.timeScale); j++) { yield return new WaitForFixedUpdate(); }
                 GameObject zansang = Instantiate(zansang_pre, trans.position, trans.rotation);
                 zansang.GetComponent<ZansangScript>().SetSprite(sprite.sprite, trans.localScale);
             }
@@ -112,8 +118,8 @@ public class PlayerMovementSkill : MonoBehaviour
 
     IEnumerator Rope()
     {
-        GameObject ankor;
-        Time.timeScale = 0.3f;
+        Time.timeScale = 0.2f;
+        Time.fixedDeltaTime = 0.004f;
         yield return new WaitUntil(() => Input.GetKeyUp(KeyCode.X) || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.RightArrow));
 
         if (Input.GetKey(KeyCode.RightArrow)) 
@@ -121,6 +127,7 @@ public class PlayerMovementSkill : MonoBehaviour
             ankor = Instantiate(arrow, trans.position, Quaternion.Euler(0, 0, 0));
             ankor.GetComponent<ArrowScript>().player = this.gameObject;
             Time.timeScale = 1f;
+            Time.fixedDeltaTime = 0.02f;
         }
 
         else if (Input.GetKey(KeyCode.UpArrow)) 
@@ -128,16 +135,19 @@ public class PlayerMovementSkill : MonoBehaviour
             ankor = Instantiate(arrow, trans.position, Quaternion.Euler(0, 0, 90));
             ankor.GetComponent<ArrowScript>().player = this.gameObject;
             Time.timeScale = 1f;
+            Time.fixedDeltaTime = 0.02f;
         }
         else if (Input.GetKey(KeyCode.LeftArrow)) 
         {
             ankor = Instantiate(arrow, trans.position, Quaternion.Euler(0, 180, 0));
             ankor.GetComponent<ArrowScript>().player = this.gameObject;
             Time.timeScale = 1f;
+            Time.fixedDeltaTime = 0.02f;
         }
         else 
         { 
             Time.timeScale = 1f;
+            Time.fixedDeltaTime = 0.02f;
             rope = null;
             yield break;
         }
@@ -181,6 +191,7 @@ public class PlayerMovementSkill : MonoBehaviour
         body.gravityScale = config.gravity;
         ankorcontact = false;
         Destroy(ankor);
+        ankor = null;
 
         yield return new WaitForSeconds(0.2f);
         rope = null;
@@ -216,6 +227,14 @@ public class PlayerMovementSkill : MonoBehaviour
             xpressed = false;   
             rope = StartCoroutine(Rope()); 
         }
+
+        if (ankor != null)
+        {
+            rope_renderer.enabled = true;
+            rope_renderer.SetPosition(0, trans.position);
+            rope_renderer.SetPosition(1, ankor.GetComponent<Transform>().position);
+        }
+        else { rope_renderer.enabled = false; }
 
     }
 }

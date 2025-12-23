@@ -92,7 +92,7 @@ public class PlayerMovement_Basic : MonoBehaviour
         {
             
             //print(OnGround());
-            if (Time.time - last_onground_time < 0.08f && canmove)
+            if (Time.time - last_onground_time < 0.1f && canmove)
             {
                 
                 body.linearVelocityY = config.jump_pow;

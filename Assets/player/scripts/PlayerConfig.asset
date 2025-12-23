@@ -15,7 +15,7 @@ MonoBehaviour:
   movespeed: 12
   accel_rate: 6
   stop_rate: 8
-  jump_pow: 11
+  jump_pow: 12
   gravity: 2.5
   dash_length: 5
   dash_speed: 60
